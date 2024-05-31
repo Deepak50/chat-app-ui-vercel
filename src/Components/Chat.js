@@ -56,7 +56,7 @@ const Chat = ({ authCode, setAuthCode }) => {
             redirect: "follow"
         };
 
-        chatList = fetch("https://chatappui-gpqj.onrender.com/getChatList/deepakkushalappa123@gmail.com", requestOptions)
+        chatList = fetch("https://chatapp-zoa1.onrender.com/getChatList/deepakkushalappa123@gmail.com", requestOptions)
             .then((response) => { response.text(); console.log("hello: ", myHeaders.get("Authorization")) })
             .then((result) => console.log(result))
             .catch((error) => console.error(error));

@@ -14,7 +14,7 @@ function TestSocket() {
         };
 
         console.log("connected...............");
-        var socket = new SockJS('https://chatappui-gpqj.onrender.com/stomp-endpoint');
+        var socket = new SockJS('https://chatapp-zoa1.onrender.com/stomp-endpoint');
         // socket.addEventListener('open', function (event) {
         //     var token = "your_auth_token";
         //     socket.send('Authorization: Bearer ' + sessionStorage.getItem('bearer'));
