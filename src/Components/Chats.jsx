@@ -66,7 +66,6 @@ export default function Chats() {
             lastMsgTime: "30/05/2024"
         }
     ]
-
     return (
         <Paper style={{ position: "fixed", left: "25vw",maxHeight: '83vh', overflow: 'auto', width: '75vw', bgcolor: "red", top: "10vh"}} className='example'>
             <List dense sx={{ width: '100%', bgcolor: '#ffffe6' }}>

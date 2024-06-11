@@ -16,21 +16,13 @@ function Login({ authCode, setAuthCode }) {
         var now = 0;
         var exp = 1;
         var bearer = sessionStorage.getItem('bearer');
-        console.log("token outside: ", bearer);
         if (bearer != null && bearer !== 'undefined' && bearer !=='null') {
-            console.log("the token is: ", bearer);
             const decodedToken = decodeJwt(bearer);
             now = new Date();
             exp = new Date(decodedToken.exp * 1000);
-            console.log("now ", now, "exp", exp);
         }
-        console.log("bearer token: ", sessionStorage.getItem('bearer'));
         if (sessionStorage.getItem('bearer') != null && sessionStorage.getItem('bearer') !== 'undefined' && now < exp && sessionStorage.getItem('bearer')!=='null') {
-            console.log("the code inside is ", sessionStorage.getItem('bearer'));
             navigate('/chat');
-        }
-        else{
-            console.log("the val is ", sessionStorage.getItem('bearer'));
         }
 
         if (bearer == null || bearer === 'undefined' || bearer === 'null') {
