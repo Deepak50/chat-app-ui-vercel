@@ -46,7 +46,7 @@ function TestSocket() {
 
     return (
         <>
-            <button onClick={connect}>Connect</button>
+            {/* <button onClick={connect}>Connect</button> */}
             <button>Disconnect</button>
             <button>Send</button>
             <button>Send to user</button>

@@ -1,8 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 import Chat from './Components/Chat';
 import Login from './Components/Login';
-import TestSocket from './Components/TestSocket';
 import { BrowserRouter, Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -13,9 +11,9 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Login authCode={authCode} setAuthCode={setAuthCode}/>}></Route>
-          <Route path="/chat" element={<Chat authCode={authCode} setAuthCode={setAuthCode}/>}></Route>
-          <Route path="/login" element={<Login authCode={authCode} setAuthCode={setAuthCode}/>}></Route>
+          <Route path='/' element={<Login authCode={authCode} setAuthCode={setAuthCode} />}></Route>
+          <Route path="/chat" element={<Chat authCode={authCode} setAuthCode={setAuthCode} />}></Route>
+          <Route path="/login" element={<Login authCode={authCode} setAuthCode={setAuthCode} />}></Route>
         </Routes>
       </BrowserRouter>
     </>

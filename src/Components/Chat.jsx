@@ -6,15 +6,17 @@ import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
 import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
-import { AppBar, Button } from '@material-ui/core';
+import { AppBar, Button, Typography } from '@material-ui/core';
 import AlignItemsList from './AlignItemsList';
 import SendSharpIcon from '@mui/icons-material/SendSharp';
 import Chats from './Chats';
 import './ALignItemsList.css'
-import TestSocket from './TestSocket';
 import { BACKEND_END_PT } from '../Constants';
-import { ArrowDropDown } from '@mui/icons-material';
-import { connect } from '../Utils/Utils';
+import { getStompEndpoint } from '../Utils/Utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { update } from '../Redux/LoggedInUser';
+import { updateFriends } from '../Redux/Friends';
+import { updateAllChat, updateSelectedUserName, updateCurrentChat } from '../Redux/Chat';
 
 
 const useStyles = makeStyles({
@@ -39,16 +41,19 @@ const useStyles = makeStyles({
 
 const Chat = ({ authCode, setAuthCode }) => {
 
-    const [friendId, setFriendId] = useState('');
-    const [people, setPeople] = useState('');
+    const { loggedInUser } = useSelector((state) => state.loggedInUser);
+    const { friends } = useSelector((state) => state.friends);
 
     const navigate = useNavigate();
     const classes = useStyles();
-    var chatList = []
+    const dispatch = useDispatch();
+
+    const [friendId, setFriendId] = useState('');
+
+    var stompClient = null;
 
     useEffect(() => {
         if (sessionStorage.getItem('bearer') == null || sessionStorage.getItem('bearer') === 'null' || sessionStorage.getItem('bearer') === 'undefined') {
-            // console.log("navigating back");
             navigate('/login');
         }
         else {
@@ -59,14 +64,15 @@ const Chat = ({ authCode, setAuthCode }) => {
                 headers: myHeaders,
                 redirect: "follow"
             };
-            fetch(BACKEND_END_PT + "/getFriends", requestOptions)
+            console.log("Token: ", sessionStorage.getItem('bearer'));
+            fetch(BACKEND_END_PT + "/getUsername", requestOptions)
                 .then((response) => response.json())
-                .then((result) => { setPeople(result.data); })
-                .then(()=>{console.log(connect(people))})
-                .catch((error) => console.error(error));            
+                .then((result) => { dispatch(update(result)); })
+                .catch((error) => console.log(error))
         }
+    }, []);
 
-
+    useEffect(() => {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('bearer'));
         const requestOptions = {
@@ -74,11 +80,24 @@ const Chat = ({ authCode, setAuthCode }) => {
             headers: myHeaders,
             redirect: "follow"
         };
+        if (loggedInUser.email != null && loggedInUser.email != "") {
+            fetch(BACKEND_END_PT + "/getEverything", requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                    dispatch(updateFriends(result.data));
+                    dispatch(updateAllChat(result.data));
+                })
+                .catch((error) => console.error(error));
 
-        chatList = fetch(BACKEND_END_PT + "/getChatList/deepakkushalappa123@gmail.com", requestOptions)
-            .then((response) => { response.text(); console.log("hello: ", myHeaders.get("Authorization")) })
-            .catch((error) => console.error(error));
-    }, []);
+        }
+        stompClient = getStompEndpoint();
+        stompClient.connect({}, function (frame) {
+            stompClient.subscribe(`/user/${loggedInUser.email}/msg`, function (message) {
+                // console.log("Subscribed username to :");
+                // console.log("This msg is sent by: ", message['body']);
+            });
+        });
+    }, [loggedInUser])
 
 
     const addFriend = () => {
@@ -90,10 +109,17 @@ const Chat = ({ authCode, setAuthCode }) => {
             redirect: "follow"
         };
 
-
         fetch(BACKEND_END_PT + "/user/addFriend?friendId=" + friendId, requestOptions)
             .then((response) => { response.text(); })
             .catch((error) => console.error(error));
+    }
+
+    const sendToUser = () => {
+        stompClient.send("/app/message", {}, JSON.stringify({
+            'endpoint': 'endpoint',
+            'to': "deepakkushalappa50@gmail.com",
+            'message': 'Hey deepak50'
+        }));
     }
 
     return (
@@ -101,7 +127,7 @@ const Chat = ({ authCode, setAuthCode }) => {
             <Stack>
                 <Stack>
                     <AppBar>
-                        <Avatar src="https://media.geeksforgeeks.org/wp-content/uploads/20210604014825/QNHrwL2q-100x100.jpg" style={{ left: 10, height: "10vh", width: "4.5vw" }} />
+                        <Avatar src={loggedInUser.picture} style={{ left: 10, height: "10vh", width: "4.5vw" }} />
                     </AppBar>
                 </Stack>
                 <Stack style={{ position: "fixed", top: '10vh' }} direction="row">
