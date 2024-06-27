@@ -1,34 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 export const chat = createSlice({
     name: "chat",
     initialState: {
         selectedUserName: "",
-        allChat: [],
-        chat: []
+        allChat: {},
+        currentChat: [],
+        realtimeChat: [],
     },
     reducers: {
         updateAllChat: (state, action) => {
             let allInfo = action.payload;
-            state.allChat = {};
-            allInfo.forEach((item)=>{
-                let jsonObj = {};
-                jsonObj[item.userId] = item.chats;
+            allInfo.forEach((item) => {
                 state.allChat[item.userId] = item.chats;
-                // .push(jsonObj);
             });
         },
-        updateSelectedUserName: (state, action)=>{
-            state.selectedUserName = action.payload
+        updateSelectedUserName: (state, action) => {
+            state.selectedUserName = action.payload;
         },
-        updateCurrentChat:(state, action)=>{
-            let a = state.selectedUserName
-            let b = state.allChat
-
-            state.chat = b[a]
+        updateCurrentChat: (state, action) => {
+            // console.log()
+            // state.chat = state.allChat[state.selectedUserName];
+            // debugger
+            console.log("payload: ", action);
+            state.currentChat = action.payload;
+        },
+        updateAllChatRealTime: (state, action)=>{
+            state.allChat = action.payload;
         }
     },
 })
 
-export const { updateAllChat, updateSelectedUserName, updateCurrentChat } = chat.actions
+export const { updateAllChat, updateSelectedUserName, updateCurrentChat, updateAllChatRealTime } = chat.actions
 export default chat.reducer

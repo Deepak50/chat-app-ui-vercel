@@ -2,7 +2,6 @@ import * as SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { Buffer } from "buffer";
 import { BACKEND_END_PT } from '../Constants';
-import { configureStore } from '@reduxjs/toolkit';
 
 export const getStompEndpoint = () => {
     var stompClient = null;
@@ -11,14 +10,6 @@ export const getStompEndpoint = () => {
     stompClient = Stomp.over(socket);
     
     return stompClient;
-
-    // const send = () => {
-    //     stompClient.send("/app/message", {}, JSON.stringify({
-    //         'endpoint': 'endpoint',
-    //         'to': 'preetham@gmail.com',
-    //         'message': $("#name").val()
-    //     }));
-    // }
 }
 
 export const decodeJwt = (token) => {

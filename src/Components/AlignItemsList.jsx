@@ -13,6 +13,11 @@ import { updateAllChat, updateSelectedUserName, updateCurrentChat } from '../Red
 
 export default function AlignItemsList() {
   const { friends } = useSelector((state) => state.friends);
+  const { currentChat } = useSelector((state) => state.chat);
+  const { allChat } = useSelector((state) => state.chat);
+  const { selectedUserName } = useSelector((state) => state.chat);
+  const [selected, setSelected] = useState(false);
+
   const dispatch = useDispatch();
 
   const myHeaders = new Headers();
@@ -23,10 +28,17 @@ export default function AlignItemsList() {
     redirect: "follow"
   };
 
+
+
+  useEffect(() => {
+    dispatch(updateCurrentChat(allChat[selectedUserName]));
+  }, [selectedUserName]);
+
   return (
     <Paper sx={{ maxHeight: '100vh', overflow: 'auto', width: '25vw' }} className='example'>
       <List dense style={{ width: '100%', maxWidth: 360, bgcolor: '#e6e6ff' }}>
         {
+
           friends.map((value) => {
             const labelId = `checkbox-list-secondary-label-${value.userId}`;
             let d = null;
@@ -35,7 +47,20 @@ export default function AlignItemsList() {
             }
             return (
               <>
-                <ListItemButton style={{ height: '60px' }} onClick={() => { dispatch(updateSelectedUserName(value.userId)); dispatch(updateCurrentChat(value.userId)); }}>
+                <ListItemButton selected={selected}
+                  onClick={() => {setSelected((prev) => !prev); dispatch(updateSelectedUserName(value.userId));}} sx={{
+                    "&.Mui-selected": {
+                      backgroundColor: "pink"
+                    },
+                    "&.Mui-focusVisible": {
+                      backgroundColor: "yellow"
+                    },
+                    ":hover": {
+                      backgroundColor: "green"
+                    },
+                    selected: true,
+                    
+                  }}   >
                   <Avatar alt="Remy Sharp" src="https://media.geeksforgeeks.org/wp-content/uploads/20210604014825/QNHrwL2q-100x100.jpg" />
                   <Stack direction="row" spacing={2} style={{ width: '100%' }}>
                     <div style={{ marginLeft: '1vw' }}>{value.userName}</div>

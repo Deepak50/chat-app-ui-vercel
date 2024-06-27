@@ -9,7 +9,8 @@ export const loggedInUser = createSlice({
             "picture": "",
             "name": "",
             "familyName": ""
-        }
+        },
+        stompClient: null
     },
     reducers: {
         update: (state, action) => {
@@ -19,11 +20,11 @@ export const loggedInUser = createSlice({
             state.loggedInUser.name = action.payload.name;
             state.loggedInUser.familyName = action.payload.familyName;
         },
-        trial: (state, action)=>{
-
+        updateStompClient: (state, action) => {
+            state.stompClient = action.payload;
         }
     },
 })
 
-export const { update, trial } = loggedInUser.actions
+export const { update, updateStompClient } = loggedInUser.actions
 export default loggedInUser.reducer
