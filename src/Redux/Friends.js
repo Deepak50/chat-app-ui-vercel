@@ -13,12 +13,12 @@ export const friends = createSlice({
             userChatMap.forEach((item) => {
                 console.log('item: ', item);
                 let friend = {};
-                friend.userId = item.userId
-                friend.userName = item.name
+                friend.userId = item.userId;
+                friend.userName = item.name;
                 if (item.chats !== null && item.chats.length !== 0)
-                    friend.sentDate = item.chats[0].sentTime
+                    friend.sentDate = item.chats[0].sentTime;
                 else
-                    friend.sentDate = null
+                    friend.sentDate = null;
                 friendList.push(friend)
 
             });

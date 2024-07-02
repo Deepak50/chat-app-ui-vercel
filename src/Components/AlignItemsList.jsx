@@ -17,7 +17,7 @@ export default function AlignItemsList() {
   const { allChat } = useSelector((state) => state.chat);
   const { selectedUserName } = useSelector((state) => state.chat);
   const [selected, setSelected] = useState(false);
-
+  const [selectedIndex, setSelectedIndex] = useState();
   const dispatch = useDispatch();
 
   const myHeaders = new Headers();
@@ -39,7 +39,8 @@ export default function AlignItemsList() {
       <List dense style={{ width: '100%', maxWidth: 360, bgcolor: '#e6e6ff' }}>
         {
 
-          friends.map((value) => {
+          friends.map((value, index) => {
+            console.log("index: ", index);
             const labelId = `checkbox-list-secondary-label-${value.userId}`;
             let d = null;
             if (value.sentDate != null) {
@@ -47,18 +48,14 @@ export default function AlignItemsList() {
             }
             return (
               <>
-                <ListItemButton selected={selected}
-                  onClick={() => {setSelected((prev) => !prev); dispatch(updateSelectedUserName(value.userId));}} sx={{
+                <ListItemButton selected={index === selectedIndex}
+                  onClick={() => {setSelectedIndex(index); dispatch(updateSelectedUserName(value.userId));}} sx={{
                     "&.Mui-selected": {
-                      backgroundColor: "pink"
+                      backgroundColor: "grey"
                     },
                     "&.Mui-focusVisible": {
                       backgroundColor: "yellow"
-                    },
-                    ":hover": {
-                      backgroundColor: "green"
-                    },
-                    selected: true,
+                    }
                     
                   }}   >
                   <Avatar alt="Remy Sharp" src="https://media.geeksforgeeks.org/wp-content/uploads/20210604014825/QNHrwL2q-100x100.jpg" />

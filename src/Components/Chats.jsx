@@ -17,7 +17,7 @@ export default function Chats() {
 
     return (
         <Paper style={{ position: "fixed", left: "25vw", maxHeight: '83vh', overflow: 'auto', width: '75vw', bgcolor: "red", top: "10vh" }} className='example'>
-            <List dense sx={{ width: '100%', bgcolor: '#ffffe6' }}>
+            <List dense sx={{ width: '100%', bgcolor: 'white', border: 'none', boxShadow: 0 }}>
                 {currentChat?.map((value) => {
                     const labelId = `checkbox-list-secondary-label-${value.name}`;
                     if (value.fromUser.userId == loggedInUser.email) {

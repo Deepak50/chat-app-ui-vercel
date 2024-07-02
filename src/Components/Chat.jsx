@@ -136,7 +136,7 @@ const Chat = ({ authCode, setAuthCode }) => {
         };
 
         fetch(BACKEND_END_PT + "/user/addFriend?friendId=" + friendId, requestOptions)
-            .then((response) => { response.text(); })
+            .then((response) => { response.text(); window.location.reload(); })
             .catch((error) => console.error(error));
     }
 
