@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { Buffer } from "buffer";
-import { CLIENT_ID, CLIENT_SECRET, GOOGLE_AUTHCODE_END_POINT, GOOGLE_TOKEN_END_PT, GRANT_TYPE_AUTH_CODE, GRANT_TYPE_REFRESH_TOKEN, REDIRECT_URI } from "../Constants";
+import { BACKEND_END_PT, CLIENT_ID, CLIENT_SECRET, GOOGLE_AUTHCODE_END_POINT, GOOGLE_TOKEN_END_PT, GRANT_TYPE_AUTH_CODE, GRANT_TYPE_REFRESH_TOKEN, REDIRECT_URI } from "../Constants";
 function Login({ authCode, setAuthCode }) {
 
     const navigate = useNavigate();
@@ -50,19 +50,33 @@ function Login({ authCode, setAuthCode }) {
                 redirect: "follow"
             };
 
+            
+
             fetch(GOOGLE_TOKEN_END_PT, requestOptions)
                 .then((response) => response.text())
                 .then((result) => {
-                    
                     const jsonObject = JSON.parse(result);
                     console.log("coming here", result);
                     sessionStorage.setItem('bearer', jsonObject.id_token);
+
+                    const myHeadersGet = new Headers();
+                    myHeadersGet.append("Authorization", "Bearer " + jsonObject.id_token);
+                    const requestOptionsGet = {
+                        method: "GET",
+                        headers: myHeadersGet,
+                        redirect: "follow"
+                    };
+
+                    // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++==token when calling saveUser: ", sessionStorage.getItem('bearer'));
+                    fetch(BACKEND_END_PT + "/login/saveUser", requestOptionsGet)
+                    .catch((error) => console.error(error));
+
                     if (jsonObject.id_token != null && jsonObject.id_token !== 'undefined') {
                         console.log("coming here");
                         navigate('/chat');
                     }
                 })
-                .catch((error) => console.error(error));
+                
         }
     }, []);
 

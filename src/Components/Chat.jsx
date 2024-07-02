@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { update, updateStompClient } from '../Redux/LoggedInUser';
 import { updateFriends } from '../Redux/Friends';
 import { updateAllChat, updateCurrentChat, updateAllChatRealTime } from '../Redux/Chat';
+import LoadingScreen from './LoadingScreen';
 
 const Chat = ({ authCode, setAuthCode }) => {
 
@@ -231,6 +232,12 @@ const Chat = ({ authCode, setAuthCode }) => {
 
         // dispatch(updateAllChatRealTime(aChat));
         // dispatch(updateCurrentChat(aChat[selectedUserName]));
+    }
+
+    if(!loggedInUser){
+        return(
+            <LoadingScreen/>
+        );
     }
 
     return (
