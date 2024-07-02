@@ -25,7 +25,8 @@ const Chat = ({ authCode, setAuthCode }) => {
     const { selectedUserName } = useSelector((state) => state.chat)
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const liu  = null;
+    const { friends } = useSelector((state) => state.friends);
+    const liu = null;
 
     const [friendId, setFriendId] = useState('');
     const [message, setMessage] = useState('');
@@ -65,11 +66,11 @@ const Chat = ({ authCode, setAuthCode }) => {
     }, []);
 
     //useEffect whenever the aChat changes, the chats needs to be updated
-    useEffect(()=>{
-        dispatch(updateAllChatRealTime(aChat)); 
+    useEffect(() => {
+        dispatch(updateAllChatRealTime(aChat));
         dispatch(updateCurrentChat(aChat[selectedUserName]));
-        
-    },[aChat]);
+
+    }, [aChat]);
 
     // useEffect after the user Logs in, (or when the user changes. Not used or tested though). The necessary API's are called only after confirming successful user login.
     useEffect(() => {
@@ -99,7 +100,7 @@ const Chat = ({ authCode, setAuthCode }) => {
         stompClient.connect({}, function (frame) {
             stompClient.subscribe(`/user/${loggedInUser.email}/msg`, function (message) {
                 console.log("Message is recieved. Confirm.")
-                console.log("A chat is : ",aChat);
+                console.log("A chat is : ", aChat);
                 let msg = JSON.parse(message['body']);
                 // todo
                 console.log("msg is ", msg);
@@ -109,14 +110,14 @@ const Chat = ({ authCode, setAuthCode }) => {
                 setAChat(prevState => ({
                     ...prevState,
                     [msg['fromUser']['userId']]: [
-                      ...(prevState[msg['fromUser']['userId']] || []),
-                      msg
+                        ...(prevState[msg['fromUser']['userId']] || []),
+                        msg
                     ]
-                    
-                  }));
+
+                }));
 
                 // aChat[selectedUserName] = [...aChat[selectedUserName], msg];
-                console.log("aChat: ",aChat);
+                console.log("aChat: ", aChat);
                 // setAChat((a) => ({ ...a }));
 
                 // dispatch(updateAllChatRealTime(aChat));
@@ -223,22 +224,15 @@ const Chat = ({ authCode, setAuthCode }) => {
         setAChat(prevState => ({
             ...prevState,
             [selectedUserName]: [
-              ...(prevState[selectedUserName] || []),
-              JSON.parse(msgJson)
+                ...(prevState[selectedUserName] || []),
+                JSON.parse(msgJson)
             ]
-          }));
-
-        // aChat[selectedUserName]= [];
-
-          
-
-        // dispatch(updateAllChatRealTime(aChat));
-        // dispatch(updateCurrentChat(aChat[selectedUserName]));
+        }));
     }
-    
-    if(loggedInUser.email == ''){
-        return(
-            <LoadingScreen/>
+
+    if (friends.length === 0) {
+        return (
+            <LoadingScreen />
         );
     }
 
