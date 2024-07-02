@@ -25,6 +25,7 @@ const Chat = ({ authCode, setAuthCode }) => {
     const { selectedUserName } = useSelector((state) => state.chat)
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const liu  = null;
 
     const [friendId, setFriendId] = useState('');
     const [message, setMessage] = useState('');
@@ -60,6 +61,7 @@ const Chat = ({ authCode, setAuthCode }) => {
                 .then((result) => { dispatch(update(result)); })
                 .catch((error) => console.log(error))
         }
+        console.log("printing here----------------------------------------------------------------------------=", loggedInUser.email);
     }, []);
 
     //useEffect whenever the aChat changes, the chats needs to be updated
@@ -233,8 +235,8 @@ const Chat = ({ authCode, setAuthCode }) => {
         // dispatch(updateAllChatRealTime(aChat));
         // dispatch(updateCurrentChat(aChat[selectedUserName]));
     }
-
-    if(!loggedInUser){
+    
+    if(loggedInUser.email == ''){
         return(
             <LoadingScreen/>
         );
