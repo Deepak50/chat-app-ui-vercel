@@ -15,12 +15,15 @@ export const friends = createSlice({
                 let friend = {};
                 friend.userId = item.userId;
                 friend.userName = item.name;
-                if (item.chats !== null && item.chats.length !== 0)
+                friend.profilePic = null;
+                if (item.chats !== null && item.chats.length !== 0){
+                    friend.profilePic = item.profilePic;
                     friend.sentDate = item.chats[0].sentTime;
+                }
                 else
                     friend.sentDate = null;
+                
                 friendList.push(friend)
-
             });
             state.friends = friendList;
         }

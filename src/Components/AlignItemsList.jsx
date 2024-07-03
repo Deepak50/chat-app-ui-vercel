@@ -58,7 +58,7 @@ export default function AlignItemsList() {
                     }
                     
                   }}   >
-                  <Avatar alt="Remy Sharp" src="https://media.geeksforgeeks.org/wp-content/uploads/20210604014825/QNHrwL2q-100x100.jpg" />
+                  <Avatar alt="Remy Sharp" src={value.profilePic} />
                   <Stack direction="row" spacing={2} style={{ width: '100%' }}>
                     <div style={{ marginLeft: '1vw' }}>{value.userName}</div>
                     <div style={{ flexGrow: 1, textAlign: 'right', fontSize: '0.75rem' }}> {printDate(d)} </div>
