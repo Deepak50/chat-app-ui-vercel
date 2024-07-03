@@ -8,10 +8,8 @@ export const friends = createSlice({
     reducers: {
         updateFriends: (state, action) => {
             let userChatMap = action.payload;
-            console.log('userChatMap: ',userChatMap);
             let friendList = []
             userChatMap.forEach((item) => {
-                console.log('item: ', item);
                 let friend = {};
                 friend.userId = item.userId;
                 friend.userName = item.name;

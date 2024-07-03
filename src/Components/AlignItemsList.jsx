@@ -40,7 +40,6 @@ export default function AlignItemsList() {
         {
 
           friends.map((value, index) => {
-            console.log("index: ", index);
             const labelId = `checkbox-list-secondary-label-${value.userId}`;
             let d = null;
             if (value.sentDate != null) {

@@ -37,10 +37,8 @@ const Chat = ({ authCode, setAuthCode }) => {
         let tmpAchat = {};
         allInfo.forEach((item) => {
             tmpAchat[item.userId] = item.chats;
-            console.log("this is htere: ", tmpAchat[item.userId]);
         });
         setAChat(tmpAchat);
-        console.log('setAchat inside updateAChat: ', aChat, tmpAchat);
     }
 
     // useEffect when the page loads.
@@ -56,13 +54,12 @@ const Chat = ({ authCode, setAuthCode }) => {
                 headers: myHeaders,
                 redirect: "follow"
             };
-            console.log("Token: ", sessionStorage.getItem('bearer'));
+            // console.log("Token: ", sessionStorage.getItem('bearer'));
             fetch(BACKEND_END_PT + "/getUsername", requestOptions)
                 .then((response) => response.json())
                 .then((result) => { dispatch(update(result)); })
                 .catch((error) => console.log(error))
         }
-        console.log("printing here----------------------------------------------------------------------------=", loggedInUser.email);
     }, []);
 
     //useEffect whenever the aChat changes, the chats needs to be updated
@@ -99,14 +96,7 @@ const Chat = ({ authCode, setAuthCode }) => {
         // connect to the logged in users end point where all other users will send messages to.
         stompClient.connect({}, function (frame) {
             stompClient.subscribe(`/user/${loggedInUser.email}/msg`, function (message) {
-                console.log("Message is recieved. Confirm.")
-                console.log("A chat is : ", aChat);
                 let msg = JSON.parse(message['body']);
-                // todo
-                console.log("msg is ", msg);
-                // let tmp = aChat[selectedUserName];
-                // tmp = [...tmp, msg];
-                console.log("selected username: ", selectedUserName);
                 setAChat(prevState => ({
                     ...prevState,
                     [msg['fromUser']['userId']]: [
@@ -115,13 +105,6 @@ const Chat = ({ authCode, setAuthCode }) => {
                     ]
 
                 }));
-
-                // aChat[selectedUserName] = [...aChat[selectedUserName], msg];
-                console.log("aChat: ", aChat);
-                // setAChat((a) => ({ ...a }));
-
-                // dispatch(updateAllChatRealTime(aChat));
-                // dispatch(updateCurrentChat(aChat[selectedUserName]));
             });
         })
     }, [loggedInUser])

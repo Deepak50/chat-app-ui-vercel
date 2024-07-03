@@ -13,26 +13,21 @@ function Login({ authCode, setAuthCode }) {
     }
 
     useEffect(() => {
-        console.log("useEffect");
         var now = 0;
         var exp = 1;
         var bearer = sessionStorage.getItem('bearer');
         if (bearer != null && bearer !== 'undefined' && bearer !== 'null') {
-            console.log("inside 1st if");
             const decodedToken = decodeJwt(bearer);
             now = new Date();
             exp = new Date(decodedToken.exp * 1000);
         }
         if (sessionStorage.getItem('bearer') != null && sessionStorage.getItem('bearer') !== 'undefined' && now < exp && sessionStorage.getItem('bearer') !== 'null') {
-            console.log("inside 2nd if");
             navigate('/chat');
         }
 
         if (bearer == null || bearer === 'undefined' || bearer === 'null') {
-            console.log("inside 3rd if");
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
-            console.log("code: ", code);
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
             const urlencoded = new URLSearchParams();
@@ -56,7 +51,6 @@ function Login({ authCode, setAuthCode }) {
                 .then((response) => response.text())
                 .then((result) => {
                     const jsonObject = JSON.parse(result);
-                    console.log("coming here", result);
                     sessionStorage.setItem('bearer', jsonObject.id_token);
 
                     const myHeadersGet = new Headers();
@@ -67,12 +61,10 @@ function Login({ authCode, setAuthCode }) {
                         redirect: "follow"
                     };
 
-                    // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++==token when calling saveUser: ", sessionStorage.getItem('bearer'));
                     fetch(BACKEND_END_PT + "/login/saveUser", requestOptionsGet)
                     .catch((error) => console.error(error));
 
                     if (jsonObject.id_token != null && jsonObject.id_token !== 'undefined') {
-                        console.log("coming here");
                         navigate('/chat');
                     }
                 })

@@ -20,10 +20,6 @@ export const chat = createSlice({
             state.selectedUserName = action.payload;
         },
         updateCurrentChat: (state, action) => {
-            // console.log()
-            // state.chat = state.allChat[state.selectedUserName];
-            // debugger
-            console.log("payload: ", action);
             state.currentChat = action.payload;
         },
         updateAllChatRealTime: (state, action)=>{
