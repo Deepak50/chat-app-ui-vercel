@@ -35,8 +35,8 @@ export default function AlignItemsList() {
   }, [selectedUserName]);
 
   return (
-    <Paper sx={{ maxHeight: '100vh', overflow: 'auto', width: '25vw' }} className='example'>
-      <List dense style={{ width: '100%', maxWidth: 360, bgcolor: '#e6e6ff' }}>
+    // <Paper sx={{ maxHeight: '100vh', overflow: 'auto', width: '50vw' }} className='example'>
+      <List dense style={{ minWidth:'25vw', maxWidth: 360, bgcolor: '#e6e6ff' }}>
         {
 
           friends.map((value, index) => {
@@ -50,7 +50,7 @@ export default function AlignItemsList() {
                 <ListItemButton selected={index === selectedIndex}
                   onClick={() => {setSelectedIndex(index); dispatch(updateSelectedUserName(value.userId));}} sx={{
                     "&.Mui-selected": {
-                      backgroundColor: "grey"
+                      backgroundColor: "#e0e0eb"
                     },
                     "&.Mui-focusVisible": {
                       backgroundColor: "yellow"
@@ -68,6 +68,6 @@ export default function AlignItemsList() {
             );
           })}
       </List>
-    </Paper>
+    // </Paper>
   );
 }

@@ -31,6 +31,7 @@ const Chat = ({ authCode, setAuthCode }) => {
     const [friendId, setFriendId] = useState('');
     const [message, setMessage] = useState('');
     const [aChat, setAChat] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
     let updateAChat = (result) => {
         let allInfo = result;
@@ -85,6 +86,9 @@ const Chat = ({ authCode, setAuthCode }) => {
                     updateAChat(result.data);
                     dispatch(updateFriends(result.data));
                     dispatch(updateAllChat(result.data));
+                })
+                .then(() => {
+                    setIsLoading(false);
                 })
                 .catch((error) => console.error(error));
 
@@ -213,7 +217,7 @@ const Chat = ({ authCode, setAuthCode }) => {
         }));
     }
 
-    if (friends.length === 0) {
+    if (isLoading) {
         return (
             <LoadingScreen />
         );
@@ -228,20 +232,24 @@ const Chat = ({ authCode, setAuthCode }) => {
                     </AppBar>
                 </Stack>
                 <Stack style={{ position: "fixed", top: '10vh' }} direction="row">
-                    <TextField onChange={(event) => { setFriendId(event.target.value); }} ></TextField>
-                    <Button onClick={addFriend} variant='contained' color='success'>Add friend+</Button>
+                    <TextField style={{width: '13vw', height: '7vh'}} onChange={(event) => { setFriendId(event.target.value); }} ></TextField>
+                    <Button style={{width: '11vw', height: '5vh'}} onClick={addFriend} variant='contained' color='success'>Add friend+</Button>
                 </Stack>
             </Stack>
 
             <Stack direction="row" spacing={0} style={{ position: "fixed", top: "16vh" }}>
                 <AlignItemsList />
                 <Chats />
-                <Paper style={{ position: 'fixed', bottom: 0, left: "25vw", right: 0, borderRadius: "10px", paddingLeft: "10px" }} elevation={3}>
-                    <TextField value={message} fullWidth label="Type Here..." id="fullWidth" onChange={(e) => { setMessage(e.target.value); }} style={{ width: "71vw", border: "2px", borderColor: "black" }} />
-                </Paper>
-                <Fab color="primary" size='medium' style={{ position: "fixed", bottom: "0vh", right: "0px" }} onClick={(e) => { sendToUser(message) }}>
-                    <SendSharpIcon style={{ ml: 0.70 }} />
-                </Fab>
+                {
+                    selectedUserName && <>
+                        <Paper style={{ position: 'fixed', bottom: 0, left: "25vw", right: 0, borderRadius: "10px", paddingLeft: "10px" }} elevation={3}>
+                            <TextField value={message} fullWidth label="Type Here..." id="fullWidth" onChange={(e) => { setMessage(e.target.value); }} style={{ width: "71vw", border: "2px", borderColor: "black" }} />
+                        </Paper>
+                        <Fab color="primary" size='medium' style={{ position: "fixed", bottom: "0vh", right: "0px" }} onClick={(e) => { sendToUser(message) }}>
+                            <SendSharpIcon style={{ ml: 0.70 }} />
+                        </Fab>
+                    </>
+                }
             </Stack>
         </>
     );
