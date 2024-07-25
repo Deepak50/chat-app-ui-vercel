@@ -19,12 +19,13 @@ export default function Chats() {
         <div style={{ position: "fixed", left: "25vw", maxHeight: '83vh', overflow: 'auto', width: '75vw', top: "10vh" }}> <List dense sx={{ width: '100%', bgcolor: 'white', border: 'none', boxShadow: 0 }}>
             {currentChat?.map((value) => {
                 const labelId = `checkbox-list-secondary-label-${value.name}`;
+                const d = new Date(value.sentTime);
                 if (value.fromUser.userId == loggedInUser.email) {
                     return (
                         <>
                             <ListItem style={{ maxWidth: "30vw", marginLeft: "auto" }}>
                                 <Stack direction="row" spacing={2} style={{ width: '100%' }}>
-                                    <div style={{ marginLeft: 'auto', backgroundColor: "#ff6666", padding: "0.5rem", borderRadius: "10px" }}><div style={{ padding: "2px" }}>{value.chatDesc}</div></div>
+                                    <div style={{ marginLeft: 'auto', backgroundColor: "#ff6666", padding: "0.5rem", borderRadius: "10px" }}><div style={{ padding: "2px" }}>{value.chatDesc}</div><div style={{ fontSize: "10px", color: "white" }}>{d.toLocaleString()}</div></div>   
                                 </Stack>
                             </ListItem>
                         </>
@@ -35,7 +36,7 @@ export default function Chats() {
                         <>
                             <ListItem style={{ maxWidth: "30vw", marginRight: "auto" }}>
                                 <Stack direction="row" spacing={2} style={{ width: '100%' }}>
-                                    <div style={{ marginRight: 'auto', backgroundColor: "#6699ff", padding: "0.5rem", borderRadius: "10px" }}><div style={{ padding: "2px" }}>{value.chatDesc}</div></div>
+                                    <div style={{ marginRight: 'auto', backgroundColor: "#6699ff", padding: "0.5rem", borderRadius: "10px" }}><div style={{ padding: "2px" }}>{value.chatDesc}</div><div style={{ fontSize: "10px", color: "white" }}>{d.toLocaleString()}</div></div>
                                 </Stack>
                             </ListItem>
                             <div style={{ height: "3px" }}></div>
