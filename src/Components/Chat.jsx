@@ -141,7 +141,7 @@ const Chat = ({ authCode, setAuthCode }) => {
                 "password": null,
                 "active": null,
                 "roles": null,
-                "profilePic": null,
+                "profilePic": loggedInUser.picture,
                 "chats": [],
                 "grps": [],
                 "joinedDate": null
