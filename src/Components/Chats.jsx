@@ -5,6 +5,8 @@ import './ALignItemsList.css'
 import ListItem from '@mui/material/ListItem';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
+import { Avatar, ListItemIcon } from '@material-ui/core';
+
 
 export default function Chats() {
     const { currentChat } = useSelector((state) => state.chat);
@@ -24,9 +26,13 @@ export default function Chats() {
                     return (
                         <>
                             <ListItem style={{ maxWidth: "30vw", marginLeft: "auto" }}>
-                                <Stack direction="row" spacing={2} style={{ width: '100%' }}>
-                                    <div style={{ marginLeft: 'auto', backgroundColor: "#ff6666", padding: "0.5rem", borderRadius: "10px" }}><div style={{ padding: "2px" }}>{value.chatDesc}</div><div style={{ fontSize: "10px", color: "white" }}>{d.toLocaleString()}</div></div>   
-                                </Stack>
+                                <div style={{ marginLeft: 'auto', backgroundColor: "#ff6666", padding: "0.5rem", borderRadius: "10px" }}>
+                                    <div>{value.chatDesc}</div>
+                                    <div style={{ fontSize: "10px", color: "white" }}>
+                                        {d.toLocaleString()}
+                                    </div>
+                                </div>
+                                <Avatar alt="Remy Sharp" src={value.fromUser.profilePic} style={{  maxWidth: "35px", maxHeight: "35px" }} />
                             </ListItem>
                         </>
                     );
@@ -34,10 +40,16 @@ export default function Chats() {
                 else {
                     return (
                         <>
-                            <ListItem style={{ maxWidth: "30vw", marginRight: "auto" }}>
-                                <Stack direction="row" spacing={2} style={{ width: '100%' }}>
-                                    <div style={{ marginRight: 'auto', backgroundColor: "#6699ff", padding: "0.5rem", borderRadius: "10px" }}><div style={{ padding: "2px" }}>{value.chatDesc}</div><div style={{ fontSize: "10px", color: "white" }}>{d.toLocaleString()}</div></div>
-                                </Stack>
+                            <ListItem style={{ maxWidth: "30vw", marginRight:"auto" }}>
+                                <Avatar alt="Remy Sharp" src={value.fromUser.profilePic} style={{ marginLeft: "0px", maxWidth: "35px", maxHeight: "35px" }} />
+                                <div style={{ marginRight: 'auto', backgroundColor: "#6699ff", padding: "0.5rem", borderRadius: "10px" }}>
+                                    <div style={{ padding: "2px" }}>
+                                        {value.chatDesc}
+                                    </div>
+                                    <div style={{ fontSize: "10px", color: "white" }}>
+                                        {d.toLocaleString()}
+                                    </div>
+                                </div>
                             </ListItem>
                             <div style={{ height: "3px" }}></div>
                         </>
