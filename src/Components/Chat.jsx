@@ -4,8 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
 import { useNavigate } from 'react-router-dom';
-import { Stack } from '@mui/material';
-import { AppBar, Button } from '@material-ui/core';
+import { Autocomplete, Modal, Stack } from '@mui/material';
+import { AppBar, Backdrop, Box, Button } from '@material-ui/core';
 import AlignItemsList from './AlignItemsList';
 import SendSharpIcon from '@mui/icons-material/SendSharp';
 import Chats from './Chats';
@@ -17,6 +17,7 @@ import { update, updateStompClient } from '../Redux/LoggedInUser';
 import { updateFriends } from '../Redux/Friends';
 import { updateAllChat, updateCurrentChat, updateAllChatRealTime } from '../Redux/Chat';
 import LoadingScreen from './LoadingScreen';
+import NestedModal from './NestedModal';
 
 const Chat = ({ authCode, setAuthCode }) => {
 
@@ -32,6 +33,7 @@ const Chat = ({ authCode, setAuthCode }) => {
     const [message, setMessage] = useState('');
     const [aChat, setAChat] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [showAddFriendDialog, setShowAddFriendDialog] = useState(false);
 
     let updateAChat = (result) => {
         let allInfo = result;
@@ -112,21 +114,6 @@ const Chat = ({ authCode, setAuthCode }) => {
             });
         })
     }, [loggedInUser])
-
-    //api call when a new friend is added.
-    const addFriend = () => {
-        const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('bearer'));
-        const requestOptions = {
-            method: "GET",
-            headers: myHeaders,
-            redirect: "follow"
-        };
-
-        fetch(BACKEND_END_PT + "/user/addFriend?friendId=" + friendId, requestOptions)
-            .then((response) => { response.text(); window.location.reload(); })
-            .catch((error) => console.error(error));
-    }
 
     // api to send the message to another endpoint(ie. selected user end point)
     const sendToUser = (msg) => {
@@ -228,12 +215,15 @@ const Chat = ({ authCode, setAuthCode }) => {
             <Stack>
                 <Stack>
                     <AppBar>
-                        <Avatar src={loggedInUser.picture} style={{ left: 10, height: "10vh", width: "4.5vw" }} />
+                        <div style={{display: "flex", flexDirection: "row"}}>
+                            <Avatar src={loggedInUser.picture} style={{ left: 10, height: "10vh", width: "4.5vw" }} />
+                            <div style={{position: "fixed", top: "0vh", left: "6vw"}}><h3>Hi {loggedInUser.givenName} 👋</h3></div>
+                        </div>
                     </AppBar>
                 </Stack>
-                <Stack style={{ position: "fixed", top: '10vh' }} direction="row">
-                    <TextField style={{width: '13vw', height: '7vh'}} onChange={(event) => { setFriendId(event.target.value); }} ></TextField>
-                    <Button style={{width: '11vw', height: '5vh'}} onClick={addFriend} variant='contained' color='success'>Add friend+</Button>
+                
+                <Stack style={{ position: "fixed", top: '10.5vh' }} direction="row">
+                    <Button variant="contained" color="success" style={{ width: '25vw', height: '7vh' }} onClick={()=>{setShowAddFriendDialog(true)}}>Add friend<h1>🧑‍🧑‍🧒‍🧒</h1></Button>
                 </Stack>
             </Stack>
 
@@ -251,6 +241,7 @@ const Chat = ({ authCode, setAuthCode }) => {
                     </>
                 }
             </Stack>
+            {showAddFriendDialog && <NestedModal showAddFriendDialog={showAddFriendDialog} setShowAddFriendDialog={setShowAddFriendDialog} />}
         </>
     );
 }

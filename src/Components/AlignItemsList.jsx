@@ -35,16 +35,15 @@ export default function AlignItemsList() {
   }, [selectedUserName]);
 
   return (
-    // <Paper sx={{ maxHeight: '100vh', overflow: 'auto', width: '50vw' }} className='example'>
       <List dense style={{ minWidth:'25vw', maxWidth: 360, bgcolor: '#e6e6ff' }}>
         {
-
           friends.map((value, index) => {
             const labelId = `checkbox-list-secondary-label-${value.userId}`;
             let d = null;
             if (value.sentDate != null) {
               d = new Date(value.sentDate);
             }
+
             return (
               <>
                 <ListItemButton selected={index === selectedIndex}
@@ -68,6 +67,5 @@ export default function AlignItemsList() {
             );
           })}
       </List>
-    // </Paper>
   );
 }
