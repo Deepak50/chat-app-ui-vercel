@@ -64,11 +64,11 @@ export default function NestedModal(props) {
                     <h1>Say "Hi" to new Friends!👋🧑‍🧑‍🧒‍🧒</h1>
                     <Stack spacing={3} sx={{ width: 500 }}>
                         <Autocomplete
-                            onChange={(event, value)=>{console.log(value); setFriendId(value)}}
+                            onChange={(event, value)=>{setFriendId(value)}}
                             id="free-solo-demo"
                             freeSolo
                             options={friends.map((option) => option.title)}
-                            renderInput={(params) => <TextField {...params} label="Choose friend or type new friend" />}
+                            renderInput={(params) => <TextField onChange={(event,value)=>{setFriendId(event.target.value)}} {...params} label="Choose friend or type new friend" />}
                         />
                     </Stack>
                     <br></br>
